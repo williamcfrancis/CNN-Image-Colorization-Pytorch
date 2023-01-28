@@ -59,7 +59,7 @@ Download the dataset zip file from https://drive.google.com/file/d/15jprd8VTdtIQ
 - Run train_hue_control.py and follow the training instructions above.
 - The color temperature can be adjusted in colorize_data_hue_control.py by changing the hue value.
 
-## Inference
+## Run Inference
 To run inference on a grayscale image, the saved model can be used. The following steps outline how to perform inference:
 
 1. Place the test image in the /inference/ folder and name it test_img.jpg (this can be changed by passing arguments).
@@ -68,3 +68,10 @@ To run inference on a grayscale image, the saved model can be used. The followin
 --model_path: Path to the saved model.\
 --image_path: Path to the grayscale test image.
 4. The inference output can be found in the /inference/ folder as inference_output.jpg.
+
+## Results
+![image](https://user-images.githubusercontent.com/38180831/215289552-d3fd414a-84d9-4eda-9ead-b70abb5e59c5.png)
+
+### Demonstrating Color Temperature Control 
+![image](https://user-images.githubusercontent.com/38180831/215289605-c464a3bd-d50a-4a19-9aed-90f9c624e035.png)
+
