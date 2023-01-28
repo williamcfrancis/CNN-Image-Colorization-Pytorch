@@ -59,11 +59,12 @@ Download the dataset zip file from https://drive.google.com/file/d/15jprd8VTdtIQ
 - Run train_hue_control.py and follow the training instructions above.
 - The color temperature can be adjusted in colorize_data_hue_control.py by changing the hue value.
 
-## How to Run Inference on a Grayscale Image
-Place the test image in /inference/ folder and name it 'test_img.jpg' (can be changed with arguments)
-Run inference_script.py with the following arguments:
---model_path: Path to the saved model
---image_path: Path to the grayscale test image
-The inference output can be found in the /inference/ folder as 'inference_output.jpg'
-Performance Metric
-The model performance is determined using Mean Squared Error (MSE) loss function and Mean Absolute Error (MAE) loss function. Both metrics are used to measure the difference between the color value to be predicted and the ground-truth color value. The MSE minimizes the squared distance between the two values, whereas the MAE
+## Inference
+To run inference on a grayscale image, the saved model can be used. The following steps outline how to perform inference:
+
+1. Place the test image in the /inference/ folder and name it test_img.jpg (this can be changed by passing arguments).
+2. Run the inference_script.py file.
+3. Use arguments from the command line to set the parameters. The following arguments are available:\
+--model_path: Path to the saved model.\
+--image_path: Path to the grayscale test image.\
+4. The inference output can be found in the /inference/ folder as inference_output.jpg.
