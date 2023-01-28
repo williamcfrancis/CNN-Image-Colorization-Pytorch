@@ -1,5 +1,5 @@
 
-# Image Colorization Task
+# Image Colorization
 
 ## Requirements
 To run the code, the environment requires all packages required for the starter code provided. 
