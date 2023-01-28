@@ -1,4 +1,4 @@
-# Image Colorization
+# Image Colorization using Convolutional Neural Nets
 ## Overview
 Welcome to the repository, this code provides a solution to a colorization task using Convolutional Neural Networks (CNNs) in PyTorch. This project is aimed at transforming grayscale images to their corresponding colorful images, and it can be used to enhance the quality of old or faded photographs. The code utilizes the latest techniques in deep learning and computer vision to produce visually appealing results. The user can run the code on their own images or use the provided sample dataset to see the results. The project also provides separate training and inference code to control the color temperature of the output images. This allows users to fine-tune the model to their specific needs and preferences. 
 
