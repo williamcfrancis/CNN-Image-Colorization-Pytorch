@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from colorize_data_hue_controlled import ColorizeData
 from skimage.color import lab2rgb
 import time
-from basic_model import Net
+from CNN_model import Net
 import torch.nn as nn
 import argparse
 import torchvision.transforms as T

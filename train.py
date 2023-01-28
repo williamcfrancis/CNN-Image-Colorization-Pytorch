@@ -5,11 +5,12 @@ import matplotlib.pyplot as plt
 from colorize_data import ColorizeData
 from skimage.color import lab2rgb
 import time
-from basic_model import Net
+from CNN_model import Net
 import torch.nn as nn
 import argparse
 import torchvision.transforms as T
 import cv2
+import glob
 
 class AverageMeter(object):
   # A handy class from the PyTorch ImageNet tutorial
@@ -37,12 +38,14 @@ class Trainer:
       color_image[:, :, 0:1] = color_image[:, :, 0:1] * 100
       color_image[:, :, 1:3] = color_image[:, :, 1:3] * 255 - 128   
       color_image = lab2rgb(color_image.astype(np.float64))
+
       grayscale_input = grayscale_input.squeeze().numpy()
       if save_path is not None and save_name is not None: 
         plt.imsave(arr=grayscale_input, fname='{}{}'.format(save_path['grayscale'], save_name), cmap='gray')
         plt.imsave(arr=color_image, fname='{}{}'.format(save_path['colorized'], save_name))
 
-    def train(self, train_loader, epoch, model, criterion, optimizer):
+
+    def train(self, train_loader, epoch, model, criterion, optimizer, scheduler):
       print('Starting training epoch {}'.format(epoch+1))
       model.train()
       # Prepare value counters and timers
@@ -68,11 +71,11 @@ class Trainer:
         batch_time.update(time.time() - end)
         end = time.time()
 
-        if i % 25 == 0:
+        if i % 2 == 0:
           print('Epoch: [{0}][{1}/{2}]\t'
                 'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
                 'Data {data_time.val:.3f} ({data_time.avg:.3f})\t'
-                'Loss {loss.val:.4f} ({loss.avg:.4f})\t'.format(
+                'Loss {loss.val:.6f} ({loss.avg:.6f})\t'.format(
                   epoch+1, i, len(train_loader), batch_time=batch_time,
                 data_time=data_time, loss=losses)) 
 
@@ -98,7 +101,7 @@ class Trainer:
         if save_images and not already_saved_images:
           already_saved_images = True
           for j in range(min(len(output_ab), 10)): # save 10 images each epoch
-            save_path = {'grayscale': 'outputs/gray/', 'colorized': 'outputs/color/'}
+            save_path = {'grayscale': 'outputs/gray/', 'colorized': 'outputs/color/', 'ground_truth': 'outputs/ground_truth/'}
             save_name = 'img-{}-epoch-{}.jpg'.format(i * val_loader.batch_size + j, epoch+1)
             self.to_rgb(input_gray[j].cpu(), ab_input=output_ab[j].detach().cpu(), save_path=save_path, save_name=save_name)
 
@@ -109,26 +112,28 @@ class Trainer:
         if i % 25 == 0:
           print('Validate: [{0}/{1}]\t'
                 'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
-                'Loss {loss.val:.4f} ({loss.avg:.4f})\t'.format(
+                'Loss {loss.val:.6f} ({loss.avg:.6f})\t'.format(
                 i, len(val_loader), batch_time=batch_time, loss=losses))
 
       print('Finished validation.')
       return losses.avg
 
-def clean_train_imgs(folder_path):
-   
-    for filename in os.listdir(folder_path):
-        file_path = os.path.join(folder_path, filename)
-        if os.path.isfile(file_path):
-            image = np.asarray(cv2.imread(file_path))
-            if len(image.shape) == 2: # Check if the image is black and white (2 channels)
-                # os.remove(file_path) # Delete the file if it is black and white
-                print("Black & white image deleted")
+def clean_train_imgs(folder_path): # remove images with no color
+
+  for filename in os.listdir(folder_path):
+      file_path = os.path.join(folder_path, filename)
+      if os.path.isfile(file_path):
+        image = cv2.imread(file_path)
+        if image is not None:
+          image_hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+          if(image_hsv[:,:,0].sum()==0 and image_hsv[:,:,1].sum()==0):
+            os.remove(file_path)
+            print('Removed image: {}'.format(file_path))
 
 if __name__ == "__main__":
     #Parsing arguments from command line
     parser = argparse.ArgumentParser()
-    parser.add_argument('--image_dir', type=str, default='../train_landscape_images/landscape_images/',
+    parser.add_argument('--image_dir', type=str, default='landscape_images/',
                         help='Directory containing all images in the dataset')
 
     parser.add_argument('--n_val', type=int, default=100,
@@ -140,10 +145,10 @@ if __name__ == "__main__":
     parser.add_argument('--save_images', type=bool, default=True,
                         help='Whether to save input and output images during validation')
     
-    parser.add_argument('--lr', type=float, default=1e-2,
+    parser.add_argument('--lr', type=float, default=1e-3,
                         help='Learning rate for training')
 
-    parser.add_argument('--weight_decay', type=float, default=0.0,
+    parser.add_argument('--weight_decay', type=float, default=1e-4,
                         help='Weight decay value for Adam optimizer')
     
     parser.add_argument('--save_model', type=bool, default=True,
@@ -152,7 +157,7 @@ if __name__ == "__main__":
     parser.add_argument('--loss', type=str, default='mse',
                         help='Choose between MAE or MSE Loss for training')
 
-    parser.add_argument('--batch_size', type=int, default=8,
+    parser.add_argument('--batch_size', type=int, default=32,
                         help='Batch size for training and validation')
 
     args = parser.parse_args()
@@ -166,13 +171,20 @@ if __name__ == "__main__":
     #     else: # others will be train
     #         os.rename(args.image_dir + file, 'images/train/class/' + file)
     
-    # Make folders
+    # # Make folders
     # os.makedirs('outputs/color', exist_ok=True)
     # os.makedirs('outputs/gray', exist_ok=True)
     # os.makedirs('models', exist_ok=True)
+    files = glob.glob('outputs/color/*')
+    for f in files:
+        os.remove(f)
+    files2 = glob.glob('outputs/gray/*')
+    for f in files2:
+        os.remove(f)
 
-    clean_train_imgs("./images/train/class/")
-    clean_train_imgs("./images/val/class/")
+    # # Clean images
+    # clean_train_imgs("./images/train/class/")
+    # clean_train_imgs("./images/val/class/")
 
     model = Net().cuda()
 
@@ -182,9 +194,9 @@ if __name__ == "__main__":
         criterion = nn.L1Loss().cuda()
 
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.weight_decay)
-
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=5, gamma=0.5, verbose=False)
     # Training
-    train_transforms = T.Compose([T.RandomResizedCrop(224)])
+    train_transforms = T.Compose([T.CenterCrop(224)])
     train_imagefolder = ColorizeData('images/train', train_transforms)
     train_loader = torch.utils.data.DataLoader(train_imagefolder, batch_size=args.batch_size, shuffle=True)
 
@@ -197,7 +209,8 @@ if __name__ == "__main__":
     # Train model
     for epoch in range(args.epochs):
         # Train for one epoch, then validate
-        Trainer().train(train_loader, epoch, model, criterion, optimizer)
+        Trainer().train(train_loader, epoch, model, criterion, optimizer, scheduler)
+        scheduler.step()
         with torch.no_grad():
             Trainer().validate(val_loader, epoch, args.save_images, model, criterion)
 
