@@ -17,8 +17,9 @@ It is recommended to use a virtual environment for the project to manage the dep
 
 Download the dataset zip file from https://drive.google.com/file/d/15jprd8VTdtIQeEtQj6wbRx6seM8j0Rx5/view?usp=sharing and extract it outside the current directory. The directory structure should look like:
 
+```
 │
-└───CNN_Image_Colorization_Pytorch
+└───Image_colorization_William
 │      train.py
 │      basic_model.py
 |      colorize_data.py
@@ -34,6 +35,8 @@ Download the dataset zip file from https://drive.google.com/file/d/15jprd8VTdtIQ
            1.jpg
            2.jpg
            ...
+```
+
 2. Run train.py with the following arguments:
 `--image_dir`: Directory containing all images in the dataset
 `--n_val`: Number of images for validation
