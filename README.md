@@ -55,18 +55,18 @@ The training creates a `/Outputs/` folder with subfolders `/Color/` and `/Gray/`
 
 ## How to Train with Color Temperature Control
 
-- Run train_hue_control.py and follow the training instructions above.
-- The color temperature can be adjusted in colorize_data_hue_control.py by changing the hue value.
+- Run `train_hue_control.py` and follow the training instructions above.
+- The color temperature can be adjusted in `colorize_data_hue_control.py` by changing the hue value.
 
 ## Run Inference
 To run inference on a grayscale image, the saved model can be used. The following steps outline how to perform inference:
 
-1. Place the test image in the /inference/ folder and name it test_img.jpg (this can be changed by passing arguments).
-2. Run the inference_script.py file.
+1. Place the test image in the `/inference/` folder and name it test_img.jpg (this can be changed by passing arguments).
+2. Run the `inference_script.py` file.
 3. Use arguments from the command line to set the parameters. The following arguments are available:\
---model_path: Path to the saved model.\
---image_path: Path to the grayscale test image.
-4. The inference output can be found in the /inference/ folder as inference_output.jpg.
+`--model_path`: Path to the saved model.\
+`--image_path`: Path to the grayscale test image.
+4. The inference output can be found in the `/inference/` folder as `inference_output.jpg`.
 
 ## Results
 ![image](https://user-images.githubusercontent.com/38180831/215289552-d3fd414a-84d9-4eda-9ead-b70abb5e59c5.png)
