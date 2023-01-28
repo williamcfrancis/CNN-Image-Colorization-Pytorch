@@ -66,5 +66,5 @@ To run inference on a grayscale image, the saved model can be used. The followin
 2. Run the inference_script.py file.
 3. Use arguments from the command line to set the parameters. The following arguments are available:\
 --model_path: Path to the saved model.\
---image_path: Path to the grayscale test image.\
+--image_path: Path to the grayscale test image.
 4. The inference output can be found in the /inference/ folder as inference_output.jpg.
