@@ -51,11 +51,7 @@ Download the dataset zip file from https://drive.google.com/file/d/15jprd8VTdtIQ
 `--loss`: Choose between 'mae' or 'mse' Loss for training\
 `--batch_size`: Batch size for training and validation
 
-- The training creates a `/Outputs/` folder with subfolders `/Color/` and `/Gray/`. Validation results are saved in `/Color/` and inputs in `/Gray/`.
-
-- The training also creates an `/Images/` folder with `train/val` images separated into different folders.
-
-- If `save_model` is enabled, the final model is saved in a /Models/ folder as a .pth file.
+The training creates a `/Outputs/` folder with subfolders `/Color/` and `/Gray/`. Validation results are saved in `/Color/` and inputs in `/Gray/`. The training also creates an `/Images/` folder with `train/val` images separated into different folders. If `save_model` is enabled, the final model is saved in a `/Models/` folder as a .pth file.
 
 ## How to Train with Color Temperature Control
 
