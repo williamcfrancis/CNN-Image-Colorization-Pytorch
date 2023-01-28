@@ -40,7 +40,7 @@ Download the dataset zip file from https://drive.google.com/file/d/15jprd8VTdtIQ
 ```
 
 2. Run train.py with the following arguments:
-3. 
+
 `--image_dir`: Directory containing all images in the dataset\
 `--n_val`: Number of images for validation\
 `--epochs`: Number of training epochs\
