@@ -1,6 +1,5 @@
 
 # Image Colorization Task
-- Please read the Report.pdf file for a brief report on the task, output images, and answers to the questions posed in the challenge.
 
 ## Requirements
 To run the code, the environment requires all packages required for the starter code provided. 
