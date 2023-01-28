@@ -37,14 +37,15 @@ Download the dataset zip file from https://drive.google.com/file/d/15jprd8VTdtIQ
 ```
 
 2. Run train.py with the following arguments:
-`--image_dir`: Directory containing all images in the dataset
-`--n_val`: Number of images for validation
-`--epochs`: Number of training epochs
-`--save_images`: Whether to save input and output images during validation
-`--lr`: Learning rate for training
-`--weight_decay`: Weight decay value for Adam optimizer
-`--save_model`: Whether to save the model after training
-`--loss`: Choose between 'mae' or 'mse' Loss for training
+3. 
+`--image_dir`: Directory containing all images in the dataset\
+`--n_val`: Number of images for validation\
+`--epochs`: Number of training epochs\
+`--save_images`: Whether to save input and output images during validation\
+`--lr`: Learning rate for training\
+`--weight_decay`: Weight decay value for Adam optimizer\
+`--save_model`: Whether to save the model after training\
+`--loss`: Choose between 'mae' or 'mse' Loss for training\
 `--batch_size`: Batch size for training and validation
 
 - The training creates a `/Outputs/` folder with subfolders `/Color/` and `/Gray/`. Validation results are saved in `/Color/` and inputs in `/Gray/`.
