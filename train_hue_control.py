@@ -2,7 +2,7 @@ import torch
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-from colorize_data_hue_controlled import ColorizeData
+from colorize_data_hue_control import ColorizeData
 from skimage.color import lab2rgb
 import time
 from CNN_model import Net
